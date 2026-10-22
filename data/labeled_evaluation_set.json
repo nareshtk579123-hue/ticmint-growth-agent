@@ -1,0 +1,514 @@
+[
+  {
+    "id": "eval_01",
+    "text": "We host a 600-person tech conference in London every October. Eventbrite is now taking nearly 9% between service fees and card processing fees. Worse, our attendees are forced into an Eventbrite account, and they keep pushing spam emails promoting competing events to our attendees! We want our own checkout on our domain where we own the attendee data and Stripe payouts. Does anyone have experience with white-label ticketing platforms?",
+    "author": "eventbuilder_uk",
+    "url": "https://news.ycombinator.com/item?id=39812401",
+    "published_at": "2026-10-18T14:22:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "fees_extortion",
+      "intent": "evaluating_alternatives",
+      "buyer_fit": "high",
+      "ground_truth_priority": "HIGH",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_02",
+    "text": "Running an event agency handling 12 multi-city corporate summits a year. Every major ticketing platform insists on plastering their giant logo across the confirmation page and checkout widget. Our enterprise clients demand white-label registration with custom domains and webhooks into Salesforce. Has anyone found a reliable white-label ticketing engine that allows custom CSS and direct webhook events?",
+    "author": "agency_mark",
+    "url": "https://news.ycombinator.com/item?id=40112933",
+    "published_at": "2026-10-19T09:15:30Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "branding_limitation",
+      "intent": "evaluating_alternatives",
+      "buyer_fit": "high",
+      "ground_truth_priority": "HIGH",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_03",
+    "text": "We sell tickets for outdoor food and music festivals. Our previous ticketing vendor withheld all ticket revenue until 10 business days AFTER the event ended! We had to float $80k in upfront production costs on high-interest credit lines. We need a ticketing platform that connects directly to our Stripe or PayPal merchant account so payouts occur in real-time as tickets sell.",
+    "author": "fest_dan",
+    "url": "https://news.ycombinator.com/item?id=39904122",
+    "published_at": "2026-10-15T11:40:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "payment_payout_delays",
+      "intent": "evaluating_alternatives",
+      "buyer_fit": "high",
+      "ground_truth_priority": "HIGH",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_04",
+    "text": "I run weekend AI workshops for product designers (25-30 people per cohort, $150 ticket). Eventbrite feels bloated and takes too big of a cut, while Google Forms + manual Stripe links is getting tedious to reconcile. What lightweight ticketing tools do you recommend?",
+    "author": "meetup_sarah",
+    "url": "https://news.ycombinator.com/item?id=40219801",
+    "published_at": "2026-10-20T16:05:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "fees_extortion",
+      "intent": "evaluating_alternatives",
+      "buyer_fit": "medium",
+      "ground_truth_priority": "MEDIUM",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_05",
+    "text": "Waited 4 hours in the virtual queue only for the dynamic pricing to spike from $99 to $850 plus $65 service fee. The Department of Justice needs to break up Live Nation immediately.",
+    "author": "concert_fan99",
+    "url": "https://news.ycombinator.com/item?id=38891200",
+    "published_at": "2026-10-12T10:00:00Z",
+    "ground_truth": {
+      "is_event_related": false,
+      "has_ticketing_pain": false,
+      "complaint_category": "none",
+      "intent": "sharing_frustration",
+      "buyer_fit": "low",
+      "ground_truth_priority": "DISQUALIFIED",
+      "is_qualified": false
+    }
+  },
+  {
+    "id": "eval_06",
+    "text": "When implementing Kerberos-style ticketing tokens between gRPC services, how do you handle ticket expiration and revocation without hitting Redis on every RPC call?",
+    "author": "dev_alex",
+    "url": "https://news.ycombinator.com/item?id=39780011",
+    "published_at": "2026-10-14T08:30:00Z",
+    "ground_truth": {
+      "is_event_related": false,
+      "has_ticketing_pain": false,
+      "complaint_category": "none",
+      "intent": "not_event_related",
+      "buyer_fit": "low",
+      "ground_truth_priority": "DISQUALIFIED",
+      "is_qualified": false
+    }
+  },
+  {
+    "id": "eval_07",
+    "text": "Case study analyzing 15 B2B summit registration funnels found that forcing attendees to create a third-party ticketing portal account caused an average drop-off of 38% at checkout. Organizers who migrated to embedded, single-page white-label checkouts saw an immediate 22% increase in completed registrations and complete control over attendee contact data.",
+    "author": "conference_insider",
+    "url": "https://eventindustryjournal.example.com/checkout-abandonment-study",
+    "published_at": "2026-10-21T07:15:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "checkout_conversion",
+      "intent": "informational",
+      "buyer_fit": "high",
+      "ground_truth_priority": "MEDIUM",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_08",
+    "text": "We organize a bi-annual medical symposium for 400 clinicians. Cvent wants a $15,000 annual contract upfront plus registration fees, and their interface looks like it was designed in 2004. Looking for a modern, HIPAA-friendly event registration tool that lets us pay per ticket or month-to-month.",
+    "author": "med_director_clara",
+    "url": "https://news.ycombinator.com/item?id=40331002",
+    "published_at": "2026-10-17T13:45:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "fees_extortion",
+      "intent": "evaluating_alternatives",
+      "buyer_fit": "high",
+      "ground_truth_priority": "HIGH",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_09",
+    "text": "Does anyone know if Stripe has an official plugin for WooCommerce to sell recurring event tickets?",
+    "author": "wp_user_22",
+    "url": "https://news.ycombinator.com/item?id=40289110",
+    "published_at": "2026-10-10T11:20:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": false,
+      "complaint_category": "general_event_tech",
+      "intent": "seeking_feedback",
+      "buyer_fit": "low",
+      "ground_truth_priority": "LOW",
+      "is_qualified": false
+    }
+  },
+  {
+    "id": "eval_10",
+    "text": "Our attendees complained that Luma doesn't support invoicing and purchase orders for enterprise corporate tickets. We lost 8 corporate team bookings because managers couldn't pay via bank wire or get a proper VAT receipt.",
+    "author": "fintech_host",
+    "url": "https://news.ycombinator.com/item?id=40411299",
+    "published_at": "2026-10-19T18:25:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "checkout_conversion",
+      "intent": "sharing_frustration",
+      "buyer_fit": "high",
+      "ground_truth_priority": "HIGH",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_11",
+    "text": "I tried to buy a ticket to PyCon but the credit card form gave a generic error three times. Has anyone else encountered this?",
+    "author": "pythonista_88",
+    "url": "https://news.ycombinator.com/item?id=40192831",
+    "published_at": "2026-10-11T09:00:00Z",
+    "ground_truth": {
+      "is_event_related": false,
+      "has_ticketing_pain": false,
+      "complaint_category": "none",
+      "intent": "sharing_frustration",
+      "buyer_fit": "low",
+      "ground_truth_priority": "DISQUALIFIED",
+      "is_qualified": false
+    }
+  },
+  {
+    "id": "eval_12",
+    "text": "Building an in-house ticketing engine because Tito and Eventbrite don't support custom seat-map selection and tier-gated discount codes for our comedy club chain. Total nightmare to maintain though.",
+    "author": "club_tech_lead",
+    "url": "https://news.ycombinator.com/item?id=40501230",
+    "published_at": "2026-10-20T10:14:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "general_event_tech",
+      "intent": "building_in_house",
+      "buyer_fit": "high",
+      "ground_truth_priority": "HIGH",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_13",
+    "text": "Announcing our keynote speaker for RustConf 2026! Early bird tickets are now live at our website.",
+    "author": "rustconf_org",
+    "url": "https://news.ycombinator.com/item?id=40498112",
+    "published_at": "2026-10-20T12:00:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": false,
+      "complaint_category": "none",
+      "intent": "informational",
+      "buyer_fit": "high",
+      "ground_truth_priority": "LOW",
+      "is_qualified": false
+    }
+  },
+  {
+    "id": "eval_14",
+    "text": "The worst part about our ticketing provider is the attendee data lock-in. When we wanted to export our past attendee list to sync with HubSpot, they charged an export fee and masked the email addresses as @attendee.platform.com relays. We literally cannot contact our own community without paying them!",
+    "author": "community_danielle",
+    "url": "https://news.ycombinator.com/item?id=40381920",
+    "published_at": "2026-10-18T16:50:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "data_lockin",
+      "intent": "sharing_frustration",
+      "buyer_fit": "high",
+      "ground_truth_priority": "HIGH",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_15",
+    "text": "How do you calculate churn on SaaS subscriptions when annual billing includes two free conference tickets?",
+    "author": "saas_cfo",
+    "url": "https://news.ycombinator.com/item?id=40120199",
+    "published_at": "2026-10-08T15:10:00Z",
+    "ground_truth": {
+      "is_event_related": false,
+      "has_ticketing_pain": false,
+      "complaint_category": "none",
+      "intent": "informational",
+      "buyer_fit": "low",
+      "ground_truth_priority": "DISQUALIFIED",
+      "is_qualified": false
+    }
+  },
+  {
+    "id": "eval_16",
+    "text": "We operate a network of 6 coworking spaces and host 20+ ticketed member and public workshops every month. Managing registrations across Eventbrite is chaotic because attendee records never sync into our member database. We need a white-label ticketing platform with robust webhooks and Zapier integration.",
+    "author": "cowork_ops",
+    "url": "https://news.ycombinator.com/item?id=40428810",
+    "published_at": "2026-10-19T14:10:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "integrations_apis",
+      "intent": "evaluating_alternatives",
+      "buyer_fit": "high",
+      "ground_truth_priority": "HIGH",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_17",
+    "text": "Any recommendations for selling 100 tickets to a local charity gala without getting gouged by 7% platform fees? Every dollar lost to ticketing fees is a dollar taken from our animal rescue sanctuary.",
+    "author": "rescue_volunteer",
+    "url": "https://news.ycombinator.com/item?id=40319200",
+    "published_at": "2026-10-16T17:30:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "fees_extortion",
+      "intent": "evaluating_alternatives",
+      "buyer_fit": "medium",
+      "ground_truth_priority": "MEDIUM",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_18",
+    "text": "Airline tickets to Tokyo are down 20% this season if you fly via Seoul.",
+    "author": "travel_deals",
+    "url": "https://news.ycombinator.com/item?id=40019280",
+    "published_at": "2026-10-05T08:00:00Z",
+    "ground_truth": {
+      "is_event_related": false,
+      "has_ticketing_pain": false,
+      "complaint_category": "none",
+      "intent": "informational",
+      "buyer_fit": "low",
+      "ground_truth_priority": "DISQUALIFIED",
+      "is_qualified": false
+    }
+  },
+  {
+    "id": "eval_19",
+    "text": "Eventbrite recently changed their organizer dashboard layout and removed the CSV export button from the main overview tab. Super annoying change.",
+    "author": "event_tech_guy",
+    "url": "https://news.ycombinator.com/item?id=40391204",
+    "published_at": "2026-10-17T19:00:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "general_event_tech",
+      "intent": "sharing_frustration",
+      "buyer_fit": "medium",
+      "ground_truth_priority": "MEDIUM",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_20",
+    "text": "We are replacing our legacy ticketing setup for our annual design conference (1,200 attendees). Looking for an embeddable widget that keeps buyers directly on our site without redirecting to a third-party checkout URL. Custom styling is a must.",
+    "author": "design_dir_ken",
+    "url": "https://news.ycombinator.com/item?id=40510091",
+    "published_at": "2026-10-21T11:00:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "branding_limitation",
+      "intent": "evaluating_alternatives",
+      "buyer_fit": "high",
+      "ground_truth_priority": "HIGH",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_21",
+    "text": "What is the best customer support ticketing software? Zendesk vs Freshdesk vs Intercom?",
+    "author": "cs_manager_tom",
+    "url": "https://news.ycombinator.com/item?id=40201991",
+    "published_at": "2026-10-13T14:00:00Z",
+    "ground_truth": {
+      "is_event_related": false,
+      "has_ticketing_pain": false,
+      "complaint_category": "none",
+      "intent": "not_event_related",
+      "buyer_fit": "low",
+      "ground_truth_priority": "DISQUALIFIED",
+      "is_qualified": false
+    }
+  },
+  {
+    "id": "eval_22",
+    "text": "Our attendees in Germany refuse to buy tickets because our current platform only accepts credit cards and doesn't offer SEPA Direct Debit or Sofort/Klarna. We missed out on dozens of European attendees.",
+    "author": "euro_events",
+    "url": "https://news.ycombinator.com/item?id=40455120",
+    "published_at": "2026-10-18T10:30:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "checkout_conversion",
+      "intent": "sharing_frustration",
+      "buyer_fit": "high",
+      "ground_truth_priority": "HIGH",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_23",
+    "text": "I lost my parking ticket at the venue garage and they charged me $50 lost ticket fee.",
+    "author": "driver_dave",
+    "url": "https://news.ycombinator.com/item?id=40118820",
+    "published_at": "2026-10-09T18:00:00Z",
+    "ground_truth": {
+      "is_event_related": false,
+      "has_ticketing_pain": false,
+      "complaint_category": "none",
+      "intent": "not_event_related",
+      "buyer_fit": "low",
+      "ground_truth_priority": "DISQUALIFIED",
+      "is_qualified": false
+    }
+  },
+  {
+    "id": "eval_24",
+    "text": "For anyone running hackathons: what ticketing platform lets students apply for free tickets with approval workflows while selling general admission tickets to recruiters at $300?",
+    "author": "hack_organizer",
+    "url": "https://news.ycombinator.com/item?id=40371900",
+    "published_at": "2026-10-16T20:15:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "general_event_tech",
+      "intent": "seeking_feedback",
+      "buyer_fit": "medium",
+      "ground_truth_priority": "MEDIUM",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_25",
+    "text": "Just launched my open source ticket management CLI written in Rust. Stars appreciated!",
+    "author": "rust_coder_3",
+    "url": "https://news.ycombinator.com/item?id=40488910",
+    "published_at": "2026-10-19T22:00:00Z",
+    "ground_truth": {
+      "is_event_related": false,
+      "has_ticketing_pain": false,
+      "complaint_category": "none",
+      "intent": "informational",
+      "buyer_fit": "low",
+      "ground_truth_priority": "DISQUALIFIED",
+      "is_qualified": false
+    }
+  },
+  {
+    "id": "eval_26",
+    "text": "Our university department hosts 8 public lectures per semester. We used Eventbrite free tier until they started charging organizers just to publish free events over 25 tickets. That is outrageous for educational non-profits.",
+    "author": "prof_jackson",
+    "url": "https://news.ycombinator.com/item?id=40399120",
+    "published_at": "2026-10-17T15:40:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "fees_extortion",
+      "intent": "evaluating_alternatives",
+      "buyer_fit": "medium",
+      "ground_truth_priority": "MEDIUM",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_27",
+    "text": "Has anyone managed to get custom tracking pixels (Meta Pixel, Google Tag Manager) working cleanly inside the Eventbrite checkout? It seems cross-domain iframe security completely blocks attribution data for our ad spend.",
+    "author": "growth_marketer_sam",
+    "url": "https://news.ycombinator.com/item?id=40461820",
+    "published_at": "2026-10-18T12:50:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "integrations_apis",
+      "intent": "evaluating_alternatives",
+      "buyer_fit": "high",
+      "ground_truth_priority": "HIGH",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_28",
+    "text": "Our gaming tournament ticketing system crashed during early-bird release due to sudden spike of 2,000 concurrent buyers. Looking for high-throughput registration platforms that don't choke under load.",
+    "author": "esports_director",
+    "url": "https://news.ycombinator.com/item?id=40519001",
+    "published_at": "2026-10-21T13:40:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "checkout_conversion",
+      "intent": "evaluating_alternatives",
+      "buyer_fit": "high",
+      "ground_truth_priority": "HIGH",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_29",
+    "text": "Looking for advice on selling digital lottery tickets for our sports club raffle. What legal licenses are needed in California?",
+    "author": "club_treasurer",
+    "url": "https://news.ycombinator.com/item?id=40250100",
+    "published_at": "2026-10-11T16:20:00Z",
+    "ground_truth": {
+      "is_event_related": false,
+      "has_ticketing_pain": false,
+      "complaint_category": "none",
+      "intent": "seeking_feedback",
+      "buyer_fit": "low",
+      "ground_truth_priority": "DISQUALIFIED",
+      "is_qualified": false
+    }
+  },
+  {
+    "id": "eval_30",
+    "text": "We organize a regional craft beer festival with 3,500 attendees. Ticket sales represent 80% of our annual operating budget. Our current ticketing vendor takes 6.5% + $1.50 per ticket, which equates to over $22,000 in fees alone. We are actively reviewing white-label alternatives where we can connect our own merchant processor and retain our brand integrity.",
+    "author": "craft_events_co",
+    "url": "https://news.ycombinator.com/item?id=40523411",
+    "published_at": "2026-10-21T17:15:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "fees_extortion",
+      "intent": "evaluating_alternatives",
+      "buyer_fit": "high",
+      "ground_truth_priority": "HIGH",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_31",
+    "text": "Our community choir sells tickets at the door and online. Is there any free ticketing system that doesn't charge per ticket?",
+    "author": "choir_host",
+    "url": "https://news.ycombinator.com/item?id=40310291",
+    "published_at": "2026-10-15T09:10:00Z",
+    "ground_truth": {
+      "is_event_related": true,
+      "has_ticketing_pain": true,
+      "complaint_category": "fees_extortion",
+      "intent": "evaluating_alternatives",
+      "buyer_fit": "medium",
+      "ground_truth_priority": "MEDIUM",
+      "is_qualified": true
+    }
+  },
+  {
+    "id": "eval_32",
+    "text": "Ticket to Ride Europe board game expansion review: excellent map dynamics and balanced train routes.",
+    "author": "boardgame_geek",
+    "url": "https://news.ycombinator.com/item?id=40188200",
+    "published_at": "2026-10-10T19:00:00Z",
+    "ground_truth": {
+      "is_event_related": false,
+      "has_ticketing_pain": false,
+      "complaint_category": "none",
+      "intent": "not_event_related",
+      "buyer_fit": "low",
+      "ground_truth_priority": "DISQUALIFIED",
+      "is_qualified": false
+    }
+  }
+]

@@ -1,0 +1,33 @@
+# Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Secrets and environment variables
+.env
+*.pem
+service_account*.json
+credentials.json
+token.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Agent local artifacts and exports
+data/local_sheet_export.json
+data/local_sheet_export.csv
+*.log

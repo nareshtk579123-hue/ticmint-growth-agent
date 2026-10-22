@@ -1,0 +1,82 @@
+[
+  {
+    "source": "hacker_news",
+    "source_id": "hn_39812401",
+    "author": "eventbuilder_uk",
+    "title": "Ask HN: Eventbrite fees are killing our developer conference. What are modern white-label alternatives?",
+    "text": "We host a 600-person tech conference in London every October. Eventbrite is now taking nearly 9% between service fees and card processing fees. Worse, our attendees are forced into an Eventbrite account, and they keep pushing spam emails promoting competing events to our attendees! We want our own checkout on our domain where we own the attendee data and Stripe payouts. Does anyone have experience with white-label ticketing platforms?",
+    "url": "https://news.ycombinator.com/item?id=39812401",
+    "canonical_url": "https://news.ycombinator.com/item?id=39812401",
+    "published_at": "2026-10-18T14:22:00Z"
+  },
+  {
+    "source": "hacker_news",
+    "source_id": "hn_40112933",
+    "author": "agency_mark",
+    "title": "Frustrated with ticketing platforms hijacking our client branding",
+    "text": "Running an event agency handling 12 multi-city corporate summits a year. Every major ticketing platform insists on plastering their giant logo across the confirmation page and checkout widget. Our enterprise clients demand white-label registration with custom domains and webhooks into Salesforce. Has anyone found a reliable white-label ticketing engine that allows custom CSS and direct webhook events?",
+    "url": "https://news.ycombinator.com/item?id=40112933",
+    "canonical_url": "https://news.ycombinator.com/item?id=40112933",
+    "published_at": "2026-10-19T09:15:30Z"
+  },
+  {
+    "source": "hacker_news",
+    "source_id": "hn_39904122",
+    "author": "fest_dan",
+    "title": "Ticketing payout delays almost bankrupted our summer festival",
+    "text": "We sell tickets for outdoor food and music festivals. Our previous ticketing vendor withheld all ticket revenue until 10 business days AFTER the event ended! We had to float $80k in upfront production costs on high-interest credit lines. We need a ticketing platform that connects directly to our Stripe or PayPal merchant account so payouts occur in real-time as tickets sell.",
+    "url": "https://news.ycombinator.com/item?id=39904122",
+    "canonical_url": "https://news.ycombinator.com/item?id=39904122",
+    "published_at": "2026-10-15T11:40:00Z"
+  },
+  {
+    "source": "hacker_news",
+    "source_id": "hn_40219801",
+    "author": "meetup_sarah",
+    "title": "What tools do you use for small paid workshop registrations?",
+    "text": "I run weekend AI workshops for product designers (25-30 people per cohort, $150 ticket). Eventbrite feels bloated and takes too big of a cut, while Google Forms + manual Stripe links is getting tedious to reconcile. What lightweight ticketing tools do you recommend?",
+    "url": "https://news.ycombinator.com/item?id=40219801",
+    "canonical_url": "https://news.ycombinator.com/item?id=40219801",
+    "published_at": "2026-10-20T16:05:00Z"
+  },
+  {
+    "source": "hacker_news",
+    "source_id": "hn_38891200",
+    "author": "concert_fan99",
+    "title": "Taylor Swift tickets are impossible and Ticketmaster fees are a scam",
+    "text": "Waited 4 hours in the virtual queue only for the dynamic pricing to spike from $99 to $850 plus $65 service fee. The Department of Justice needs to break up Live Nation immediately.",
+    "url": "https://news.ycombinator.com/item?id=38891200",
+    "canonical_url": "https://news.ycombinator.com/item?id=38891200",
+    "published_at": "2026-10-12T10:00:00Z"
+  },
+  {
+    "source": "hacker_news",
+    "source_id": "hn_39780011",
+    "author": "dev_alex",
+    "title": "Best practices for JWT ticket authentication in distributed microservices",
+    "text": "When implementing Kerberos-style ticketing tokens between gRPC services, how do you handle ticket expiration and revocation without hitting Redis on every RPC call?",
+    "url": "https://news.ycombinator.com/item?id=39780011",
+    "canonical_url": "https://news.ycombinator.com/item?id=39780011",
+    "published_at": "2026-10-14T08:30:00Z"
+  },
+  {
+    "source": "rss_feed",
+    "source_id": "rss_ev_901",
+    "author": "conference_insider",
+    "title": "Checkout Abandonment in B2B Conferences Reaches 38% Due to Mandatory Account Walls",
+    "text": "Case study analyzing 15 B2B summit registration funnels found that forcing attendees to create a third-party ticketing portal account caused an average drop-off of 38% at checkout. Organizers who migrated to embedded, single-page white-label checkouts saw an immediate 22% increase in completed registrations and complete control over attendee contact data.",
+    "url": "https://eventindustryjournal.example.com/checkout-abandonment-study",
+    "canonical_url": "https://eventindustryjournal.example.com/checkout-abandonment-study",
+    "published_at": "2026-10-21T07:15:00Z"
+  },
+  {
+    "source": "hacker_news",
+    "source_id": "hn_39812401_dup",
+    "author": "eventbuilder_uk",
+    "title": "Ask HN: Eventbrite fees are killing our developer conference. What are modern white-label alternatives?",
+    "text": "We host a 600-person tech conference in London every October. Eventbrite is now taking nearly 9% between service fees and card processing fees. Worse, our attendees are forced into an Eventbrite account...",
+    "url": "https://news.ycombinator.com/item?id=39812401&utm_source=twitter",
+    "canonical_url": "https://news.ycombinator.com/item?id=39812401",
+    "published_at": "2026-10-18T14:22:00Z"
+  }
+]
