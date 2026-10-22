@@ -19,6 +19,7 @@ def clean_local_storage(tmp_path: Path, monkeypatch):
     monkeypatch.setattr(config, "LOCAL_SHEET_JSON_PATH", test_json)
     monkeypatch.setattr(config, "LOCAL_SHEET_CSV_PATH", test_csv)
     monkeypatch.setattr(config, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(config, "GOOGLE_SHEET_ID", "")
     return test_json, test_csv
 
 
