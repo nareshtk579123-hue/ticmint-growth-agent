@@ -1,9 +1,11 @@
 // Ticmint Growth Agent Frontend Controller
+// Natural Light Blue Theme — Clean Real-Time Dashboard (Zero Emojis)
 
 document.addEventListener('DOMContentLoaded', () => {
   // DOM Elements
   const runBtn = document.getElementById('run-agent-btn');
-  const btnIcon = document.getElementById('btn-icon');
+  const btnSpinner = document.getElementById('btn-spinner');
+  const btnIconWrapper = document.getElementById('btn-icon-wrapper');
   const btnText = document.getElementById('btn-text');
   const querySelect = document.getElementById('query-select');
   const limitSelect = document.getElementById('limit-select');
@@ -17,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const leadsGrid = document.getElementById('leads-grid');
   const sheetLink = document.getElementById('sheet-link');
   const toast = document.getElementById('toast');
-  const filterChips = document.querySelectorAll('.category-filter-chips .chip');
+  const filterPills = document.querySelectorAll('.filter-pill');
 
   // KPI Elements
   const kpiIngested = document.getElementById('kpi-ingested');
@@ -38,10 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
         sheetLink.href = data.spreadsheet_url;
       }
       if (data.gemini_model) {
-        document.getElementById('llm-model-text').textContent = data.gemini_model;
+        const modelEl = document.getElementById('llm-model-text');
+        if (modelEl) modelEl.textContent = data.gemini_model;
       }
       if (data.has_google_auth) {
-        document.getElementById('sheet-status-text').textContent = 'Connected (Live)';
+        const sheetEl = document.getElementById('sheet-status-text');
+        if (sheetEl) sheetEl.textContent = 'Connected (Live)';
       }
     } catch (e) {
       console.warn('Config fetch error:', e);
@@ -63,13 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3. Update KPI Counters
   function updateKPIs(leads) {
-    kpiQualified.textContent = leads.length;
+    if (kpiQualified) kpiQualified.textContent = leads.length;
     const high = leads.filter(l => l.priority === 'HIGH').length;
-    kpiHighPriority.textContent = high;
+    if (kpiHighPriority) kpiHighPriority.textContent = high;
   }
 
   // 4. Render Lead Cards
   function renderLeads() {
+    if (!leadsGrid) return;
     leadsGrid.innerHTML = '';
 
     const filtered = currentFilter === 'all'
@@ -78,19 +83,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (filtered.length === 0) {
       leadsGrid.innerHTML = `
-        <div class="empty-state glass-card">
-          <div class="empty-icon">🔍</div>
-          <h3>No leads matching filter '${currentFilter}'</h3>
-          <p>Change your filter or launch a new run to discover fresh opportunities.</p>
+        <div class="empty-state-box">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="empty-icon-svg">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <div class="empty-title">No leads matching filter '${escapeHtml(currentFilter)}'</div>
+          <div class="empty-sub">Select another filter pill or trigger "Run Listener" to scan public sources.</div>
         </div>
       `;
       return;
     }
 
-    filtered.forEach((lead, idx) => {
+    filtered.forEach((lead) => {
       const card = document.createElement('div');
-      card.className = 'lead-card glass-card';
       const isHigh = lead.priority === 'HIGH';
+      card.className = `lead-card ${isHigh ? 'high-priority' : ''}`;
       const categoryLabel = (lead.complaint_category || 'general').replace(/_/g, ' ');
 
       card.innerHTML = `
@@ -98,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="lead-meta">
             <div class="lead-author">
               @${escapeHtml(lead.author)}
-              <span class="source-badge">${escapeHtml(lead.source)}</span>
+              <span class="source-badge">${escapeHtml(lead.source || 'public')}</span>
             </div>
             <span class="lead-category-tag">${categoryLabel}</span>
           </div>
@@ -113,29 +121,49 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <div class="draft-box">
-          <div class="draft-label">Personalized Outreach Draft (Evidence-Grounded)</div>
+          <div class="draft-label">Personalized Outreach Draft</div>
           <p class="draft-text">${escapeHtml(lead.outreach_draft || 'No draft generated.')}</p>
         </div>
 
         <div class="lead-card-actions">
           <button class="copy-draft-btn" data-draft="${encodeURIComponent(lead.outreach_draft || '')}">
-            📋 Copy Outreach Draft
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>Copy Draft</span>
           </button>
-          ${lead.source_url ? `<a href="${lead.source_url}" target="_blank" class="open-source-btn">View Source Thread ↗</a>` : ''}
+          ${lead.source_url ? `
+            <a href="${escapeHtml(lead.source_url)}" target="_blank" rel="noopener noreferrer" class="open-source-btn">
+              <span>View Source</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </a>
+          ` : ''}
         </div>
       `;
       leadsGrid.appendChild(card);
     });
 
     // Attach Copy Handlers
-    document.querySelectorAll('.copy-draft-btn').forEach(btn => {
+    leadsGrid.querySelectorAll('.copy-draft-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const text = decodeURIComponent(e.currentTarget.getAttribute('data-draft'));
+        const text = decodeURIComponent(btn.getAttribute('data-draft'));
         navigator.clipboard.writeText(text).then(() => {
-          showToast('Outreach draft copied to clipboard!');
-          const prev = btn.textContent;
-          btn.textContent = '✓ Copied!';
-          setTimeout(() => btn.textContent = prev, 2000);
+          showToast('Outreach draft copied to clipboard');
+          const originalHtml = btn.innerHTML;
+          btn.innerHTML = `
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Copied</span>
+          `;
+          setTimeout(() => {
+            btn.innerHTML = originalHtml;
+          }, 2000);
         });
       });
     });
@@ -177,29 +205,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateProgressBar(progress, msg, stage);
 
-    // Append to Terminal Body
     if (msg) {
       appendTerminalLog(type, msg);
     }
 
-    // Handle Specific Events
     if (type === 'run_started') {
       setRunningState(true);
       setActiveStep(1);
-      appendTerminalLog('system', `▶ Execution Run Started [${data.payload?.run_id}]`);
+      appendTerminalLog('system', `[RUN] Execution initiated (ID: ${data.payload?.run_id || 'active'})`);
     } else if (type === 'mcp_connected') {
       setActiveStep(2);
-      appendTerminalLog('info', `[MCP] Server Handshake Complete. Tools: ${data.payload?.tools?.join(', ')}`);
+      appendTerminalLog('info', `[MCP] Server connected. Tools available: ${data.payload?.tools?.join(', ')}`);
     } else if (type === 'query_completed') {
-      kpiIngested.textContent = data.payload?.total_pool || 0;
-      appendTerminalLog('info', `[DISCOVERY] ${data.payload?.query} -> ${data.payload?.count} items.`);
+      if (kpiIngested) kpiIngested.textContent = data.payload?.total_pool || 0;
+      appendTerminalLog('info', `[DISCOVERY] ${data.payload?.query} -> ${data.payload?.count} raw discussion items found`);
     } else if (type === 'dedup_completed') {
       setActiveStep(3);
-      kpiDuplicates.textContent = data.payload?.duplicates_filtered || 0;
-      appendTerminalLog('highlight', `[DEDUP] ${data.payload?.unique_count} unique discussions retained (${data.payload?.duplicates_filtered} duplicates stripped).`);
+      if (kpiDuplicates) kpiDuplicates.textContent = data.payload?.duplicates_filtered || 0;
+      appendTerminalLog('highlight', `[DEDUP] ${data.payload?.unique_count} unique items retained (${data.payload?.duplicates_filtered} duplicates filtered via canonical URL & SHA256)`);
     } else if (type === 'analysis_started') {
       setActiveStep(4);
-      appendTerminalLog('info', `[GEMINI] LLM intent classification & pain point extraction active...`);
+      appendTerminalLog('info', `[ANALYSIS] Classifying organizer intent and extracting pain citations...`);
     } else if (type === 'signal_evaluated') {
       setActiveStep(5);
       const isQual = data.payload?.is_qualified;
@@ -210,10 +236,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       appendTerminalLog(
         isQual ? 'success' : 'system',
-        `[EVAL] @${author}: ${score}/100 [${tier}] Category: ${cat} -> ${isQual ? 'QUALIFIED' : 'FILTERED'}`
+        `[EVAL] @${author}: ${score}/100 [${tier}] ${cat} -> ${isQual ? 'QUALIFIED' : 'FILTERED'}`
       );
 
-      // If qualified, prepend to live leads array
       if (isQual) {
         const existingIdx = allLeads.findIndex(l => l.author === author);
         const leadObj = {
@@ -237,21 +262,23 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else if (type === 'sheet_sync_started') {
       setActiveStep(6);
-      appendTerminalLog('highlight', `[SHEETS] Synchronizing qualified leads to Google Sheets...`);
+      appendTerminalLog('highlight', `[SHEETS] Synchronizing qualified records to Google Sheets...`);
     } else if (type === 'sheet_sync_completed') {
       const res = data.payload?.result || {};
-      appendTerminalLog('success', `[SHEETS] Upsert complete: ${res.inserted || 0} inserted, ${res.updated || 0} updated in-place.`);
+      appendTerminalLog('success', `[SHEETS] Upsert complete: ${res.inserted || 0} inserted, ${res.updated || 0} updated in-place`);
     } else if (type === 'run_completed') {
       setRunningState(false);
       markAllStepsCompleted();
-      appendTerminalLog('success', `✔ [COMPLETE] Growth listener run finished successfully!`);
-      showToast('Growth Listener Run Complete! Google Sheets updated.');
+      appendTerminalLog('success', `[COMPLETE] Growth listener run finished successfully`);
+      showToast('Growth listener run completed. Google Sheets updated.');
       loadLeads();
     } else if (type === 'run_failed') {
       setRunningState(false);
-      executionBadge.textContent = 'FAILED';
-      executionBadge.className = 'status-indicator-badge';
-      appendTerminalLog('error', `✖ [ERROR] Run failed: ${data.error}`);
+      if (executionBadge) {
+        executionBadge.textContent = 'FAILED';
+        executionBadge.className = 'status-pill-badge failed';
+      }
+      appendTerminalLog('error', `[ERROR] Run interrupted: ${data.error}`);
     }
   }
 
@@ -260,15 +287,17 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 1; i <= 6; i++) {
       const node = document.getElementById(`step-${i}`);
       const line = document.getElementById(`line-${i}`);
+      if (!node) continue;
+
       if (i < stepNum) {
-        node.className = 'step-node completed';
-        if (line) line.style.background = '#10b981';
+        node.className = 'step-item completed';
+        if (line) line.classList.add('completed');
       } else if (i === stepNum) {
-        node.className = 'step-node active';
-        if (line) line.style.background = 'rgba(0, 242, 254, 0.4)';
+        node.className = 'step-item active';
+        if (line) line.classList.remove('completed');
       } else {
-        node.className = 'step-node';
-        if (line) line.style.background = 'rgba(255, 255, 255, 0.1)';
+        node.className = 'step-item';
+        if (line) line.classList.remove('completed');
       }
     }
   }
@@ -277,36 +306,36 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 1; i <= 6; i++) {
       const node = document.getElementById(`step-${i}`);
       const line = document.getElementById(`line-${i}`);
-      node.className = 'step-node completed';
-      if (line) line.style.background = '#10b981';
+      if (node) node.className = 'step-item completed';
+      if (line) line.classList.add('completed');
     }
   }
 
   // 8. Progress Bar & Status Helpers
   function updateProgressBar(percent, message, stage) {
     const cleanPercent = Math.min(Math.max(percent || 0, 0), 100);
-    progressBarFill.style.width = `${cleanPercent}%`;
-    progressPercentLabel.textContent = `${cleanPercent}%`;
+    if (progressBarFill) progressBarFill.style.width = `${cleanPercent}%`;
+    if (progressPercentLabel) progressPercentLabel.textContent = `${cleanPercent}%`;
 
-    if (message) {
+    if (message && liveStatusMessage) {
       liveStatusMessage.textContent = message;
     }
 
-    if (stage) {
+    if (stage && stageTitle) {
       stageTitle.textContent = formatStageTitle(stage);
     }
   }
 
   function formatStageTitle(stage) {
     const map = {
-      'idle': 'Ready to Scan Public Communities',
+      'idle': 'System Ready',
       'starting': 'Initializing Agent Process...',
       'mcp_handshake': 'Handshake with MCP Server...',
-      'querying_sources': 'Scanning Hacker News & Public RSS...',
-      'deduplicating': 'Canonical Deduplication (SHA256)...',
-      'ai_analysis': 'Gemini 3.8 Flash Intent Classification...',
-      'google_sheets_sync': 'Idempotent Google Sheets Synchronization...',
-      'completed': 'Agent Run Completed Successfully',
+      'querying_sources': 'Scanning Discussion Sources...',
+      'deduplicating': 'Filtering Duplicate Signals...',
+      'ai_analysis': 'Classifying Intent & Pain Points...',
+      'google_sheets_sync': 'Synchronizing with Google Sheets...',
+      'completed': 'Execution Completed',
       'failed': 'Execution Interrupted',
     };
     return map[stage] || stage;
@@ -315,23 +344,34 @@ document.addEventListener('DOMContentLoaded', () => {
   function setRunningState(running) {
     isRunning = running;
     if (running) {
-      runBtn.classList.add('running');
-      btnIcon.textContent = '⏳';
-      btnText.textContent = 'Listener Running...';
-      executionBadge.textContent = 'RUNNING';
-      executionBadge.className = 'status-indicator-badge running';
+      if (runBtn) {
+        runBtn.disabled = true;
+      }
+      if (btnSpinner) btnSpinner.style.display = 'inline-block';
+      if (btnIconWrapper) btnIconWrapper.style.display = 'none';
+      if (btnText) btnText.textContent = 'Running Listener...';
+      if (executionBadge) {
+        executionBadge.textContent = 'RUNNING';
+        executionBadge.className = 'status-pill-badge running';
+      }
     } else {
-      runBtn.classList.remove('running');
-      btnIcon.textContent = '▶';
-      btnText.textContent = 'Launch Growth Listener Run';
-      executionBadge.textContent = 'COMPLETED';
-      executionBadge.className = 'status-indicator-badge completed';
+      if (runBtn) {
+        runBtn.disabled = false;
+      }
+      if (btnSpinner) btnSpinner.style.display = 'none';
+      if (btnIconWrapper) btnIconWrapper.style.display = 'inline-block';
+      if (btnText) btnText.textContent = 'Run Listener';
+      if (executionBadge) {
+        executionBadge.textContent = 'COMPLETED';
+        executionBadge.className = 'status-pill-badge completed';
+      }
     }
   }
 
   function appendTerminalLog(type, text) {
+    if (!terminalBody) return;
     const line = document.createElement('div');
-    line.className = `terminal-line ${type}`;
+    line.className = `console-line ${type}`;
     const time = new Date().toLocaleTimeString('en-GB');
     line.textContent = `[${time}] ${text}`;
     terminalBody.appendChild(line);
@@ -340,9 +380,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 9. Toast Helper
   function showToast(msg) {
+    if (!toast) return;
     toast.textContent = msg;
     toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3500);
+    setTimeout(() => toast.classList.remove('show'), 3200);
   }
 
   function escapeHtml(str) {
@@ -356,41 +397,45 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 10. Event Listeners
-  runBtn.addEventListener('click', async () => {
-    if (isRunning) return;
+  if (runBtn) {
+    runBtn.addEventListener('click', async () => {
+      if (isRunning) return;
 
-    const query = querySelect.value;
-    const limit = parseInt(limitSelect.value, 10);
+      const query = querySelect ? querySelect.value : '';
+      const limit = limitSelect ? parseInt(limitSelect.value, 10) : 10;
 
-    setRunningState(true);
-    updateProgressBar(5, 'Triggering agent run...', 'starting');
-    appendTerminalLog('system', `[ACTION] User triggered run (Limit: ${limit}, Query: '${query || 'Default'}')`);
+      setRunningState(true);
+      updateProgressBar(5, 'Triggering agent run...', 'starting');
+      appendTerminalLog('system', `[ACTION] User triggered run (Limit: ${limit}, Query: '${query || 'Default Target Queries'}')`);
 
-    try {
-      const res = await fetch('/api/run', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: query, limit: limit }),
-      });
-      const data = await res.json();
-      if (data.status === 'busy') {
-        showToast('Agent is already running!');
+      try {
+        const res = await fetch('/api/run', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: query, limit: limit }),
+        });
+        const data = await res.json();
+        if (data.status === 'busy') {
+          showToast('Agent is currently running another task');
+        }
+      } catch (e) {
+        appendTerminalLog('error', `Trigger failed: ${e.message}`);
+        setRunningState(false);
       }
-    } catch (e) {
-      appendTerminalLog('error', `Trigger failed: ${e.message}`);
-      setRunningState(false);
-    }
-  });
+    });
+  }
 
-  clearTerminalBtn.addEventListener('click', () => {
-    terminalBody.innerHTML = '<div class="terminal-line system">[SYSTEM] Terminal logs cleared.</div>';
-  });
+  if (clearTerminalBtn && terminalBody) {
+    clearTerminalBtn.addEventListener('click', () => {
+      terminalBody.innerHTML = '<div class="console-line system">[SYSTEM] Activity log cleared.</div>';
+    });
+  }
 
-  filterChips.forEach(chip => {
-    chip.addEventListener('click', (e) => {
-      filterChips.forEach(c => c.classList.remove('active'));
-      e.target.classList.add('active');
-      currentFilter = e.target.getAttribute('data-filter');
+  filterPills.forEach(pill => {
+    pill.addEventListener('click', (e) => {
+      filterPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentFilter = pill.getAttribute('data-filter') || 'all';
       renderLeads();
     });
   });
