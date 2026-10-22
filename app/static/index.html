@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticmint Growth Intelligence — Autonomous Agent Control Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="background-glow top-glow"></div>
+  <div class="background-glow bottom-glow"></div>
+
+  <div class="app-container">
+    <!-- Top Navigation Header -->
+    <header class="main-header">
+      <div class="brand-group">
+        <div class="logo-badge">
+          <div class="pulse-ring"></div>
+          <span class="logo-icon">⚡</span>
+        </div>
+        <div>
+          <h1 class="brand-title">TICMINT <span class="highlight-text">GROWTH AGENT</span></h1>
+          <p class="brand-subtitle">Autonomous Internet Listener & Lead Qualification Console</p>
+        </div>
+      </div>
+
+      <div class="system-status-pills">
+        <div class="status-pill active" id="mcp-status-pill">
+          <span class="dot"></span>
+          <span class="pill-label">MCP Server: <strong id="mcp-status-text">Ready</strong></span>
+        </div>
+        <div class="status-pill active" id="sheets-status-pill">
+          <span class="dot"></span>
+          <span class="pill-label">Google Sheet: <strong id="sheet-status-text">Connected</strong></span>
+        </div>
+        <div class="status-pill active" id="llm-status-pill">
+          <span class="dot"></span>
+          <span class="pill-label">LLM: <strong id="llm-model-text">Gemini 3.8 Flash</strong></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Control Bar & Trigger -->
+    <section class="control-panel glass-card">
+      <div class="control-grid">
+        <div class="input-group">
+          <label for="query-select">Target Query Filter</label>
+          <select id="query-select" class="custom-select">
+            <option value="">All Default Queries (Fees, White-Label, Payouts, Checkout)</option>
+            <option value='"event ticketing" fees'>"event ticketing" fees</option>
+            <option value='"ticketing platform" alternative'>"ticketing platform" alternative</option>
+            <option value='"white label ticketing" recommendation'>"white label ticketing" recommendation</option>
+            <option value='"event registration" frustrated'>"event registration" frustrated</option>
+            <option value="Eventbrite alternative fees">Eventbrite alternative fees</option>
+          </select>
+        </div>
+
+        <div class="input-group sm">
+          <label for="limit-select">Max Signals</label>
+          <select id="limit-select" class="custom-select">
+            <option value="5">5 Signals (Fast)</option>
+            <option value="10" selected>10 Signals (Balanced)</option>
+            <option value="25">25 Signals (Full Search)</option>
+          </select>
+        </div>
+
+        <div class="action-group">
+          <button id="run-agent-btn" class="glow-button">
+            <span class="btn-icon" id="btn-icon">▶</span>
+            <span id="btn-text">Launch Growth Listener Run</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Sheet Quick Links -->
+      <div class="quick-links-bar">
+        <a id="sheet-link" href="#" target="_blank" class="text-link">
+          <span class="icon">📊</span> View Live Google Sheet
+        </a>
+        <span class="divider">•</span>
+        <a id="github-link" href="https://github.com/nareshtk579123-hue/ticmint-growth-agent" target="_blank" class="text-link">
+          <span class="icon">🐙</span> GitHub Repository
+        </a>
+        <span class="divider">•</span>
+        <span class="rubric-badge">100-Point Transparent Rubric Engine</span>
+      </div>
+    </section>
+
+    <!-- Real-Time Progress Tracker Panel -->
+    <section class="progress-section glass-card" id="progress-card">
+      <div class="progress-header">
+        <div class="progress-info">
+          <div class="status-indicator-badge" id="execution-badge">IDLE</div>
+          <h2 class="section-title" id="stage-title">Ready to Scan Public Communities</h2>
+        </div>
+        <div class="progress-percentage" id="progress-percent-label">0%</div>
+      </div>
+
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+      </div>
+
+      <p class="live-status-message" id="live-status-message">Click "Launch Growth Listener Run" to query Hacker News, analyze pain signals, and update Google Sheets in real-time.</p>
+
+      <!-- Step Pipeline Flow -->
+      <div class="pipeline-stepper">
+        <div class="step-node" id="step-1">
+          <div class="step-circle">1</div>
+          <div class="step-label">MCP Handshake</div>
+        </div>
+        <div class="step-line" id="line-1"></div>
+        <div class="step-node" id="step-2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Public Signals Search</div>
+        </div>
+        <div class="step-line" id="line-2"></div>
+        <div class="step-node" id="step-3">
+          <div class="step-circle">3</div>
+          <div class="step-label">Deduplication & Hash</div>
+        </div>
+        <div class="step-line" id="line-3"></div>
+        <div class="step-node" id="step-4">
+          <div class="step-circle">4</div>
+          <div class="step-label">Gemini AI Reasoning</div>
+        </div>
+        <div class="step-line" id="line-4"></div>
+        <div class="step-node" id="step-5">
+          <div class="step-circle">5</div>
+          <div class="step-label">100-Pt Scoring</div>
+        </div>
+        <div class="step-line" id="line-5"></div>
+        <div class="step-node" id="step-6">
+          <div class="step-circle">6</div>
+          <div class="step-label">Google Sheets Sync</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real-Time Terminal Logs & Metric Cards Grid -->
+    <div class="dashboard-grid">
+      <!-- Terminal Console Window -->
+      <div class="terminal-card glass-card">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <span class="terminal-title">LIVE EXECUTION STREAM (STDIO / MCP / SSE)</span>
+          <button id="clear-terminal-btn" class="clear-btn">Clear Logs</button>
+        </div>
+        <div class="terminal-body" id="terminal-body">
+          <div class="terminal-line system">[SYSTEM] Ticmint Agent Dashboard initialized. Ready for commands.</div>
+        </div>
+      </div>
+
+      <!-- KPI Metrics Column -->
+      <div class="metrics-column">
+        <div class="metric-card glass-card">
+          <div class="metric-icon">📡</div>
+          <div class="metric-content">
+            <span class="metric-label">Signals Ingested</span>
+            <span class="metric-value" id="kpi-ingested">0</span>
+            <span class="metric-trend">Live across HN & RSS</span>
+          </div>
+        </div>
+
+        <div class="metric-card glass-card">
+          <div class="metric-icon">🛡️</div>
+          <div class="metric-content">
+            <span class="metric-label">Duplicates Filtered</span>
+            <span class="metric-value" id="kpi-duplicates">0</span>
+            <span class="metric-trend">Canonical URL & SHA256</span>
+          </div>
+        </div>
+
+        <div class="metric-card glass-card highlight-cyan">
+          <div class="metric-icon">🎯</div>
+          <div class="metric-content">
+            <span class="metric-label">Qualified Leads</span>
+            <span class="metric-value" id="kpi-qualified">0</span>
+            <span class="metric-trend">Score &ge; 50/100 Rubric</span>
+          </div>
+        </div>
+
+        <div class="metric-card glass-card highlight-purple">
+          <div class="metric-icon">🔥</div>
+          <div class="metric-content">
+            <span class="metric-label">High-Priority Alerts</span>
+            <span class="metric-value" id="kpi-high-priority">0</span>
+            <span class="metric-trend">Score &ge; 75/100 (Immediate SDR)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Qualified Leads Registry Grid -->
+    <section class="leads-section">
+      <div class="leads-header">
+        <div>
+          <h2 class="section-title">Discovered Opportunities & Evidence Dossier</h2>
+          <p class="section-subtitle">Real-time leads extracted by the agent, scored on the 100-point rubric, and synced to Google Sheets.</p>
+        </div>
+        <div class="category-filter-chips">
+          <button class="chip active" data-filter="all">All Opportunities</button>
+          <button class="chip" data-filter="fees_extortion">Fees & Extortion</button>
+          <button class="chip" data-filter="branding_limitation">Branding Limits</button>
+          <button class="chip" data-filter="payment_payout_delays">Payout Delays</button>
+          <button class="chip" data-filter="checkout_conversion">Checkout Dropoff</button>
+        </div>
+      </div>
+
+      <div class="leads-grid" id="leads-grid">
+        <div class="empty-state glass-card">
+          <div class="empty-icon">🔍</div>
+          <h3>No leads evaluated in this session yet</h3>
+          <p>Click "Launch Growth Listener Run" above to scan live public discussions.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast">Outreach draft copied to clipboard!</div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

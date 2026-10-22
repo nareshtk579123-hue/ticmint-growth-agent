@@ -29,13 +29,28 @@ logging.basicConfig(
 logger = logging.getLogger("ticmint.agent")
 
 
+from typing import Any, Callable, Coroutine, Dict, List, Optional
+
 class TicmintGrowthAgent:
     """Autonomous Growth Engineering Agent connecting to custom MCP Server."""
 
-    def __init__(self, dry_run: bool = False, max_signals: int = 25):
+    def __init__(
+        self,
+        dry_run: bool = False,
+        max_signals: int = 25,
+        callback: Optional[Callable[[str, Dict[str, Any]], Coroutine[Any, Any, None]]] = None
+    ):
         self.dry_run = dry_run
         self.max_signals = max_signals
+        self.callback = callback
         self.llm = LLMAnalyzer()
+
+    async def _notify(self, event_type: str, data: Dict[str, Any]):
+        if self.callback:
+            try:
+                await self.callback(event_type, data)
+            except Exception as e:
+                logger.debug("Callback notification error: %s", e)
 
     async def run(self, search_queries: Optional[List[str]] = None) -> AgentRunLog:
         """
@@ -50,6 +65,13 @@ class TicmintGrowthAgent:
         run_id = f"run_{uuid.uuid4().hex[:8]}"
         started_at = datetime.now(timezone.utc).isoformat()
         queries = search_queries or config.TARGET_SEARCH_QUERIES[:4]
+
+        await self._notify("run_started", {
+            "run_id": run_id,
+            "queries": queries,
+            "max_signals": self.max_signals,
+            "started_at": started_at,
+        })
 
         logger.info("=== Starting Ticmint Growth Agent Run [%s] ===", run_id)
         logger.info("Target search queries: %s", queries)
@@ -76,11 +98,13 @@ class TicmintGrowthAgent:
                     tools_resp = await session.list_tools()
                     registered_names = [t.name for t in tools_resp.tools]
                     logger.info("Connected to MCP Server. Available tools: %s", registered_names)
+                    await self._notify("mcp_connected", {"tools": registered_names})
 
                     # 1. Search public signals across queries via MCP Tool
                     raw_signals_pool: List[Dict[str, Any]] = []
                     for query in queries:
                         logger.info("Invoking MCP tool 'search_public_signals' for: '%s'", query)
+                        await self._notify("query_started", {"query": query})
                         tool_result = await session.call_tool(
                             "search_public_signals",
                             {"query": query, "limit": 10}
@@ -90,11 +114,17 @@ class TicmintGrowthAgent:
                         signals_found = res_data.get("signals", [])
                         raw_signals_pool.extend(signals_found)
                         logger.info("Retrieved %d signals for query '%s'", len(signals_found), query)
+                        await self._notify("query_completed", {
+                            "query": query,
+                            "count": len(signals_found),
+                            "total_pool": len(raw_signals_pool)
+                        })
 
                     records_retrieved = len(raw_signals_pool)
 
                     # 2. Deduplicate signals via MCP Tool
                     logger.info("Invoking MCP tool 'deduplicate_signals' on %d collected records", records_retrieved)
+                    await self._notify("dedup_started", {"total_collected": records_retrieved})
                     dedup_result = await session.call_tool(
                         "deduplicate_signals",
                         {"signals_json": json.dumps(raw_signals_pool)}
@@ -104,12 +134,18 @@ class TicmintGrowthAgent:
                     duplicates_filtered = records_retrieved - len(unique_signals_dict)
                     logger.info("Deduplication complete: %d unique records retained (%d duplicates removed)",
                                 len(unique_signals_dict), duplicates_filtered)
+                    await self._notify("dedup_completed", {
+                        "records_retrieved": records_retrieved,
+                        "unique_count": len(unique_signals_dict),
+                        "duplicates_filtered": duplicates_filtered
+                    })
 
                     # Truncate to maximum configured signals
                     target_signals = [RawSignal(**s) for s in unique_signals_dict[:self.max_signals]]
+                    await self._notify("analysis_started", {"target_count": len(target_signals)})
 
                     # 3. AI Intent Classification & Scoring
-                    for sig in target_signals:
+                    for idx, sig in enumerate(target_signals, start=1):
                         try:
                             # AI Analysis
                             analysis: SignalAnalysis = self.llm.analyze_signal(sig)
@@ -125,8 +161,10 @@ class TicmintGrowthAgent:
                             score_dict = json.loads(score_res.content[0].text)
                             score_breakdown = ScoreBreakdown(**score_dict)
 
+                            is_qualified = score_breakdown.total_score >= config.MIN_SCORE_QUALIFIED
+
                             # If qualified (score >= 50), build LeadRecord
-                            if score_breakdown.total_score >= config.MIN_SCORE_QUALIFIED:
+                            if is_qualified:
                                 lead_id = RawSignal.generate_lead_id(sig.source, sig.canonical_url)
                                 now_iso = datetime.now(timezone.utc).isoformat()
 
@@ -153,6 +191,20 @@ class TicmintGrowthAgent:
                                     high_priority_count += 1
                                 logger.info("Qualified Lead [%s]: Score=%d, Priority=%s, Author=%s",
                                             lead_id, score_breakdown.total_score, score_breakdown.priority.value, sig.author)
+
+                            await self._notify("signal_evaluated", {
+                                "index": idx,
+                                "total": len(target_signals),
+                                "author": sig.author,
+                                "source": sig.source,
+                                "url": sig.url,
+                                "quote": analysis.evidence_quote,
+                                "score": score_breakdown.total_score,
+                                "priority": score_breakdown.priority.value,
+                                "category": analysis.complaint_category.value,
+                                "is_qualified": is_qualified,
+                                "draft": analysis.outreach_draft,
+                            })
                         except Exception as e:
                             llm_errors += 1
                             logger.error("Error analyzing signal %s: %s", sig.source_id, e)
@@ -160,6 +212,7 @@ class TicmintGrowthAgent:
                     # 4. Synchronize Qualified Leads to Google Sheets / Local Storage via MCP Tool
                     if not self.dry_run and qualified_leads:
                         logger.info("Invoking MCP tool 'upsert_sheet_leads' with %d leads", len(qualified_leads))
+                        await self._notify("sheet_sync_started", {"count": len(qualified_leads)})
                         leads_payload = json.dumps([l.model_dump() for l in qualified_leads])
                         upsert_res = await session.call_tool(
                             "upsert_sheet_leads",
@@ -170,8 +223,12 @@ class TicmintGrowthAgent:
                             sheet_errors += 1
                             run_status = "WARNING"
                             logger.error("Sheet upsert error: %s", upsert_data.get("error"))
+                            await self._notify("sheet_sync_failed", {"error": upsert_data.get("error")})
+                        else:
+                            await self._notify("sheet_sync_completed", {"result": upsert_data.get("result")})
                     elif self.dry_run:
                         logger.info("[DRY RUN] Skipping sheet synchronization for %d qualified leads", len(qualified_leads))
+                        await self._notify("sheet_sync_skipped_dry_run", {"count": len(qualified_leads)})
 
                     # 5. Log Run History & Summary via MCP Tool
                     completed_at = datetime.now(timezone.utc).isoformat()
@@ -204,6 +261,10 @@ class TicmintGrowthAgent:
 
                     logger.info("=== Run [%s] Finished: %s ===", run_id, run_status)
                     self._print_terminal_summary(run_log, qualified_leads)
+                    await self._notify("run_completed", {
+                        "run_log": run_log.model_dump(),
+                        "qualified_leads": [l.model_dump() for l in qualified_leads]
+                    })
                     return run_log
 
         except Exception as e:
