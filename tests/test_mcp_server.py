@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 import pytest
 from app.mcp_server import server
+from app.sheets import SheetsManager
 from app.models import (
     AgentRunLog,
     BuyerFit,
@@ -107,8 +108,11 @@ async def test_score_lead_tool():
 @pytest.mark.asyncio
 async def test_upsert_sheet_leads_tool(tmp_path, monkeypatch):
     import app.config as cfg
+    import app.mcp_server as mcp
     monkeypatch.setattr(cfg.config, "LOCAL_SHEET_JSON_PATH", tmp_path / "sheet.json")
     monkeypatch.setattr(cfg.config, "LOCAL_SHEET_CSV_PATH", tmp_path / "sheet.csv")
+    monkeypatch.setattr(cfg.config, "GOOGLE_SHEET_ID", "")
+    monkeypatch.setattr(mcp, "_sheets_mgr", SheetsManager())
 
     breakdown = ScoreBreakdown(
         ticketing_pain=28, switching_intent=25, icp_fit=20, recency=10, evidence_quality=8,
@@ -146,8 +150,11 @@ async def test_upsert_sheet_leads_tool(tmp_path, monkeypatch):
 @pytest.mark.asyncio
 async def test_log_agent_run_tool(tmp_path, monkeypatch):
     import app.config as cfg
+    import app.mcp_server as mcp
     monkeypatch.setattr(cfg.config, "LOCAL_SHEET_JSON_PATH", tmp_path / "sheet.json")
     monkeypatch.setattr(cfg.config, "LOCAL_SHEET_CSV_PATH", tmp_path / "sheet.csv")
+    monkeypatch.setattr(cfg.config, "GOOGLE_SHEET_ID", "")
+    monkeypatch.setattr(mcp, "_sheets_mgr", SheetsManager())
 
     run_log = AgentRunLog(
         run_id="run_mcp_01",
