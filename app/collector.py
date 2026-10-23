@@ -51,7 +51,7 @@ def canonicalize_url(raw_url: str) -> str:
 class SignalCollector:
     """Collects and normalizes public discussions from permitted APIs and RSS feeds."""
 
-    HN_SEARCH_URL = "https://hn.algolia.com/api/v1/search"
+    HN_SEARCH_URL = "https://hn.algolia.com/api/v1/search_by_date"
 
     def __init__(self, timeout: float = 12.0):
         self.timeout = timeout
@@ -63,17 +63,27 @@ class SignalCollector:
     def close(self):
         self.client.close()
 
-    def fetch_hacker_news_signals(self, query: str, hits_per_page: int = 15) -> List[RawSignal]:
+    def fetch_hacker_news_signals(
+        self,
+        query: str,
+        hits_per_page: int = 15,
+        max_age_days: int = 180
+    ) -> List[RawSignal]:
         """
-        Query Hacker News Algolia search API for a given query string.
+        Query Hacker News Algolia search API sorted by date (most recent discussions first).
         Extracts both stories and comments discussing ticketing frictions.
         """
         signals: List[RawSignal] = []
+        clean_query = query.replace('"', '').strip()
+
+        # Target live discussions within recent window (default 180 days)
+        now_ts = int(datetime.now(timezone.utc).timestamp())
+        cutoff_ts = now_ts - (max_age_days * 86400)
         params = {
-            "query": query,
+            "query": clean_query,
             "tags": "(story,comment)",
             "hitsPerPage": hits_per_page,
-            "numericFilters": "points>=0",
+            "numericFilters": f"created_at_i>{cutoff_ts}",
         }
 
         try:
@@ -84,6 +94,17 @@ class SignalCollector:
 
             data = response.json()
             hits = data.get("hits", [])
+
+            # If recent filter yielded zero hits for narrow query, fallback to latest available without date cutoff
+            if not hits:
+                params_fallback = {
+                    "query": clean_query,
+                    "tags": "(story,comment)",
+                    "hitsPerPage": hits_per_page,
+                }
+                fallback_resp = self.client.get(self.HN_SEARCH_URL, params=params_fallback)
+                if fallback_resp.status_code == 200:
+                    hits = fallback_resp.json().get("hits", [])
 
             for hit in hits:
                 story_id = hit.get("story_id") or hit.get("objectID")
@@ -167,8 +188,8 @@ class SignalCollector:
             if len(collected) >= max_total:
                 break
 
-        # 2. If live search returned few results or in offline/testing mode, augment with vetted samples
-        if include_samples or len(collected) < 5:
+        # 2. Only if live search returned zero results (offline/testing fallback), augment with vetted samples
+        if not collected and include_samples:
             samples = self.load_sample_signals()
             collected.extend(samples)
 

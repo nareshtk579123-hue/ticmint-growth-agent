@@ -77,14 +77,20 @@ class LLMAnalyzer:
         falls back to deterministic heuristic pattern analysis.
         """
         if self._client:
-            try:
-                return self._analyze_with_gemini(signal)
-            except Exception as e:
-                logger.error("Gemini API error on signal %s: %s. Falling back to heuristic analyzer.", signal.source_id, e)
+            models_to_try = [self.model]
+            if "gemini-3.5-flash-lite" not in models_to_try:
+                models_to_try.append("gemini-3.5-flash-lite")
+
+            for m in models_to_try:
+                try:
+                    return self._analyze_with_gemini(signal, model=m)
+                except Exception as e:
+                    logger.warning("Gemini model %s error on signal %s: %s", m, signal.source_id, e)
 
         return self._analyze_heuristic(signal)
 
-    def _analyze_with_gemini(self, signal: RawSignal) -> SignalAnalysis:
+    def _analyze_with_gemini(self, signal: RawSignal, model: Optional[str] = None) -> SignalAnalysis:
+        model_name = model or self.model
         prompt = f"""
 SOURCE: {signal.source}
 AUTHOR: {signal.author}
@@ -96,7 +102,7 @@ TEXT:
 Analyze this signal now and return ONLY the JSON object.
 """
         response = self._client.models.generate_content(
-            model=self.model,
+            model=model_name,
             contents=[ANALYSIS_SYSTEM_PROMPT, prompt],
         )
 

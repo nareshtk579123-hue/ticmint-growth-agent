@@ -45,16 +45,16 @@ class Config:
     MIN_SCORE_QUALIFIED: int = int(os.getenv("MIN_LEAD_SCORE_QUALIFIED", "50"))
     MIN_SCORE_HIGH_PRIORITY: int = int(os.getenv("MIN_LEAD_SCORE_HIGH_PRIORITY", "75"))
 
-    # Search queries for Hacker News Algolia API & communities
+    # Search queries for Hacker News Algolia API & communities (live real-time keywords)
     TARGET_SEARCH_QUERIES: List[str] = [
-        "\"event ticketing\" fees",
-        "\"ticketing platform\" alternative",
-        "\"event registration\" frustrated",
-        "\"white label ticketing\" recommendation",
-        "\"ticketing platform\" custom domain",
-        "\"event organiser\" checkout issues",
-        "Eventbrite alternative fees",
-        "Luma alternative white label",
+        "ticketing fees",
+        "Eventbrite fees",
+        "event registration",
+        "tickets Stripe",
+        "selling tickets",
+        "ticketing platform",
+        "white label ticketing",
+        "event ticketing",
     ]
 
     # RSS Feeds for public event organizer blogs and communities
